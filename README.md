@@ -1,2 +1,2 @@
-# android_teaching
-This repository is made for some android technical courses for teaching
+# RxJava and RxAndroid
+In this repository you learn how to work with RxJava and RxAndroid in your project
