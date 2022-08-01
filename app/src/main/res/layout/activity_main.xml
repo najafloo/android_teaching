@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:bind="http://schemas.android.com/tools">
+
+    <data>
+        <variable
+            name="viewModel"
+            type="com.shahpar.mvvmtraining.viewmodels.LoginViewModel" />
+    </data>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_margin="8dp"
+            android:orientation="vertical">
+            <EditText
+                android:id="@+id/inEmail"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/email"
+                android:inputType="textEmailAddress"
+                android:padding="8dp"
+                android:text="@={viewModel.userEmail}"
+                android:autofillHints="emailAddress" />
+
+            <EditText
+                android:id="@+id/inPassword"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/password"
+                android:inputType="textPassword"
+                android:padding="8dp"
+                android:text="@={viewModel.userPassword}"
+                android:autofillHints="password" />
+
+            <EditText
+                android:id="@+id/inMyVar"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/password"
+                android:padding="8dp"
+                android:text="@={viewModel.myVar}"/>
+            <Button
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:onClick="@{() -> viewModel.onLoginClicked()}"
+                android:text="@string/login"
+                bind:toastMessage="@{viewModel.toastMessage}" />
+            <Button
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:onClick="@{() -> viewModel.showVariable()}"
+                android:text="@string/login"
+                bind:toastMessage="@{viewModel.myVar}" />
+        </LinearLayout>
+    </ScrollView>
+</layout>
