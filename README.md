@@ -1,2 +1,2 @@
-# android_teaching
-This repository is made for some android technical courses for teaching
+# Training Retrofit
+This repository is made for working retrofit and work with APIs
