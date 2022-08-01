@@ -1,2 +1,2 @@
 # Training Retrofit
-This repository is made for working retrofit and work with APIs
+This repository is made for working with retrofit and APIs
