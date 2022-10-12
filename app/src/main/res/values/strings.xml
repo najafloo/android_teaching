@@ -1,3 +1,9 @@
 <resources>
-    <string name="app_name">RxJava</string>
+    <string name="app_name">Get Free Api</string>
+    <string name="name">Name:</string>
+    <string name="age">Age:</string>
+    <string name="birthday">Birthday:</string>
+    <string name="email">Email:</string>
+    <string name="get_new_user_randomly_from_api">Get new user randomly from Api:</string>
+    <string name="tryon">try</string>
 </resources>

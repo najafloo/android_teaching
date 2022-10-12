@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">وبسرویس رایگان</string>
+    <string name="name">نام:</string>
+    <string name="age">سن:</string>
+    <string name="birthday">تاریخ تولد:</string>
+    <string name="email">آدرس الکترونیکی:</string>
+    <string name="get_new_user_randomly_from_api">دریافت کاربر تصادفی از وبسرویس:</string>
+    <string name="tryon">تلاش</string>
+</resources>
