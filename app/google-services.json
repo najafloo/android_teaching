@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "108292472585",
+    "project_id": "training-bd50c",
+    "storage_bucket": "training-bd50c.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:108292472585:android:ae22f70348f7126a921dd8",
+        "android_client_info": {
+          "package_name": "com.shahpar.training"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "108292472585-hdjfgjuqlb55fngjrsgb4c6sg4btjnb3.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBlpkl7lTnlhTnmzCC4YYVb9_an6vPd150"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "108292472585-hdjfgjuqlb55fngjrsgb4c6sg4btjnb3.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
