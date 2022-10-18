@@ -4,7 +4,6 @@ import android.Manifest
 import android.app.Activity
 import android.content.Intent
 import android.content.pm.PackageManager
-import android.database.Cursor
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
@@ -13,16 +12,18 @@ import android.util.Log
 import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
-import com.google.firebase.database.core.Context
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.database.DatabaseReference
+import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.StorageReference
 import com.shahpar.training.const.Const
+import com.shahpar.training.const.Const.FIREBASE_POSTS_COMMENT
+import com.shahpar.training.const.Const.FIREBASE_POSTS_EMAIL
+import com.shahpar.training.const.Const.FIREBASE_POSTS_IMAGE
+import com.shahpar.training.const.Const.FIREBASE_POSTS_TABLE
 import com.shahpar.training.const.Const.TAG
 import com.shahpar.training.databinding.ActivityUploadBinding
-import java.io.File
-import java.io.FileInputStream
-import java.io.FileOutputStream
-import java.nio.file.Files.copy
 import java.util.*
 
 class UploadActivity : AppCompatActivity() {
@@ -30,39 +31,66 @@ class UploadActivity : AppCompatActivity() {
     lateinit var binding: ActivityUploadBinding
 
     private var mSelectUri: Uri? = null
-    var filePath: String? = null
 
     private var mStorageRef: StorageReference? = null
+    private var mAuth: FirebaseAuth? = null
+    private var firebaseDatebase : FirebaseDatabase? = null
+    private var databaseRef : DatabaseReference? = null
 
     private fun upload() {
 
         val uuid = UUID.randomUUID()
         val imageName = Const.FIREBASE_IMAGE_FOLDER + uuid + ".jpg"
 
-        Log.d(TAG, "upload: $imageName")
-
         val imageStorageRef = mStorageRef!!.child(imageName)
+
+        Log.d(TAG, "upload: $imageName")
 
         if (mSelectUri == null) return
 
-        val ref = imageStorageRef.putFile(mSelectUri!!)
+        Log.d(TAG, "upload: step 1")
 
-        ref.addOnSuccessListener { taskSnapshot ->
-            val downloadURL = taskSnapshot.storage.downloadUrl
+        imageStorageRef.putFile(mSelectUri!!)
+            .addOnSuccessListener { taskSnapshot ->
 
-            Log.d(TAG, "upload finished: $downloadURL")
-        }
+                imageStorageRef.downloadUrl.addOnSuccessListener {
+                    val postUrl = it.toString()
+                    Log.d(TAG, "upload succeed upload: $postUrl")
 
-        ref.addOnFailureListener { exception ->
-            Log.d(TAG, "upload: falied : ${exception.message}")
-            Toast.makeText(application, exception.localizedMessage, Toast.LENGTH_LONG).show()
-        }
 
-        ref.addOnCompleteListener { taskSnapshot ->
-            if (taskSnapshot.isSuccessful) {
-                Toast.makeText(application, "Post is shared", Toast.LENGTH_LONG).show()
+                    val user = mAuth!!.currentUser
+                    val email = user!!.email
+                    val comment = binding.txtMessage.text.toString()
+
+                    Log.d(TAG, "upload succeed: user : $user")
+                    Log.d(TAG, "upload succeed: email : $email")
+                    Log.d(TAG, "upload succeed: comment : $comment")
+
+                    val uuid = UUID.randomUUID().toString()
+
+                    databaseRef!!.child(FIREBASE_POSTS_TABLE).child(uuid).child(FIREBASE_POSTS_EMAIL).setValue(email)
+                    databaseRef!!.child(FIREBASE_POSTS_TABLE).child(uuid).child(FIREBASE_POSTS_COMMENT).setValue(comment)
+                    databaseRef!!.child(FIREBASE_POSTS_TABLE).child(uuid).child(FIREBASE_POSTS_IMAGE).setValue(postUrl)
+
+                    Log.d(TAG, "upload: upload succeed FINISHed")
+
+                }
             }
-        }
+            .addOnFailureListener { exception ->
+                Log.d(TAG, "upload: failed : ${exception.message}")
+                Toast.makeText(application, exception.localizedMessage, Toast.LENGTH_LONG).show()
+            }
+            .addOnCompleteListener { taskSnapshot ->
+                if (taskSnapshot.isSuccessful) {
+                    Toast.makeText(application, "Post is shared", Toast.LENGTH_LONG).show()
+                }
+            }
+            .addOnProgressListener{
+                val progress = (100.0 * it.bytesTransferred) / it.totalByteCount
+                binding.progressBar.progress = progress.toInt()
+                val per = "${progress.toInt()} %"
+                binding.textView2.text = per
+            }
     }
 
     @RequiresApi(Build.VERSION_CODES.M)
@@ -71,7 +99,10 @@ class UploadActivity : AppCompatActivity() {
         binding = ActivityUploadBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        mAuth = FirebaseAuth.getInstance()
         mStorageRef = FirebaseStorage.getInstance().reference
+        firebaseDatebase = FirebaseDatabase.getInstance()
+        databaseRef = firebaseDatebase!!.reference
 
         binding.imgPostImage.setOnClickListener {
             if (checkSelfPermission(Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
@@ -112,7 +143,6 @@ class UploadActivity : AppCompatActivity() {
             try {
                 val bitmap = MediaStore.Images.Media.getBitmap(this.contentResolver, mSelectUri)
                 binding.imgPostImage.setImageBitmap(bitmap)
-                binding.textView.text = mSelectUri.toString()
             } catch (e: Exception) {
                 e.printStackTrace()
             }
