@@ -1,2 +1,2 @@
-# RxJava and RxAndroid
-In this repository you learn how to work with RxJava and RxAndroid in your project
+# Wrting Unit test for your app projects
+In this repository you learn how to work with JUnit5(Jupiter) in your project

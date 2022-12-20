@@ -1,4 +1,4 @@
-package com.shahpar.rxjava;
+package com.shahpar.unittesttraining;
 
 import org.junit.Test;
 
