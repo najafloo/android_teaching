@@ -2,8 +2,10 @@ package com.shahpar.unittesttraining.lib;
 
 import junit.framework.TestCase;
 
+import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -12,8 +14,19 @@ public class DietPlannerTest extends TestCase {
 
     private DietPlanner dietPlanner;
 
+    @BeforeAll
+    static void beforeAll() {
+        System.out.println("----------------- Before all");
+    }
+
+    @AfterAll
+    static void afterAll() {
+        System.out.println("----------------- After all");
+    }
+
     @BeforeEach
     void setup() {
+        System.out.println("----------------- create class");
         this.dietPlanner = new DietPlanner(20, 30, 50);
     }
 
