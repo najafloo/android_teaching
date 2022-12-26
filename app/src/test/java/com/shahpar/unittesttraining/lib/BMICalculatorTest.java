@@ -5,6 +5,8 @@ import junit.framework.TestCase;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.ValueSource;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -90,5 +92,20 @@ public class BMICalculatorTest extends TestCase {
 
         // then
         Assertions.assertArrayEquals(expected, bmiScores);
+    }
+
+    @ParameterizedTest
+    @DisplayName("Should return false when diet not recommended")
+    @ValueSource(doubles = {89.0, 95.0, 110.0})
+    void should_ReturnFalse_When_DietNotRecommended(Double coderWeight) {
+        // given
+        double weight = coderWeight;
+        double height = 1.72;
+
+        // when
+        boolean recommended = BMICalculator.isDietRecommended(weight, height);
+
+        // then
+        Assertions.assertTrue(recommended);
     }
 }
