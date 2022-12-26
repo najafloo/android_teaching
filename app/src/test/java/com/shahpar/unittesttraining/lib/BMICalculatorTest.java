@@ -5,11 +5,14 @@ import junit.framework.TestCase;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.function.Executable;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvFileSource;
 import org.junit.jupiter.params.provider.CsvSource;
 import org.junit.jupiter.params.provider.ValueSource;
 
+import java.lang.reflect.Type;
+import java.time.Duration;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -139,5 +142,20 @@ public class BMICalculatorTest extends TestCase {
 
         // then
         Assertions.assertTrue(recommended);
+    }
+
+    @Test
+    void Should_ReturnCoderWithWorstBMI1Ms_WhenListHas10000Elements() {
+        // given
+        List<Coder> coders = new ArrayList<>();
+        for(int i = 0; i < 10000; i++) {
+            coders.add(new Coder(1.0 + i, 10.0 + i));
+        }
+
+        // when
+        Executable executable = () -> BMICalculator.findCoderWithWorstBMI(coders);
+
+        //then
+        Assertions.assertTimeout(Duration.ofMillis(10), executable);
     }
 }
