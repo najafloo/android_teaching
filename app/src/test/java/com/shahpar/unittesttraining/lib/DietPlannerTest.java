@@ -8,6 +8,7 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.RepeatedTest;
 import org.junit.jupiter.api.Test;
 
 public class DietPlannerTest extends TestCase {
@@ -38,6 +39,29 @@ public class DietPlannerTest extends TestCase {
     @DisplayName("Should return correct diets plan when correct coder")
     @Test
     void testCorrectDiets() {
+
+        // given
+        Coder coder = new Coder(1.82, 75.0, 26, Gender.MALE);
+        DietPlan expected = new DietPlan(2202, 110, 73, 275);
+
+        // when
+        DietPlan actual = dietPlanner.calculateDiet(coder);
+
+        // then
+
+//        Assertions.assertEquals(expected, actual); NOT ALLOWED FOR CLASSES
+
+        Assertions.assertAll(
+                () -> Assertions.assertEquals(expected.getCalories(), actual.getCalories()),
+                () -> Assertions.assertEquals(expected.getProtein(), actual.getProtein()),
+                () -> Assertions.assertEquals(expected.getFat(), actual.getFat()),
+                () -> Assertions.assertEquals(expected.getCarbohydrate(), actual.getCarbohydrate())
+        );
+    }
+
+    @DisplayName("Should return correct diets plan when correct coder")
+    @RepeatedTest(10)
+    void testCorrectDietsRepeat() {
 
         // given
         Coder coder = new Coder(1.82, 75.0, 26, Gender.MALE);
